@@ -76,7 +76,7 @@ class Container extends React.PureComponent {
 
   mouveDown = (e) => {
     // Save reference to starting x position
-    this.mouseDownXPos = x: e.touches[0].clientX,
+    this.mouseDownXPos = e.touches[0].clientX,
 
     // Debounce pause
     e.preventDefault()
