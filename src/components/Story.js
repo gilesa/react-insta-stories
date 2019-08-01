@@ -72,8 +72,6 @@ export default class Story extends React.Component {
     )
   }
   render() {
-    console.log('HERE')
-    console.log(this.props.story)
     return (
       <div style={{...styles.story, width: this.props.width, height: this.props.height}}>
         {this.getStoryContent()}

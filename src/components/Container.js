@@ -94,6 +94,8 @@ class Container extends React.PureComponent {
   }
 
   render() {
+    const { currentStoryGroup, currentStoryItem } = this.state
+
     return (
       <div style={{ ...styles.container, ...{ width: this.width, height: this.height } }}>
         <ProgressArray
@@ -101,10 +103,10 @@ class Container extends React.PureComponent {
           pause={this.state.pause}
           bufferAction={this.state.bufferAction}
           videoDuration={this.state.videoDuration}
-          length={this.props.stories[this.state.currentStoryGroup].items.map((_, i) => i)}
+          length={this.props.stories[currentStoryGroup].items.map((_, i) => i)}
           defaultInterval={this.defaultInterval}
-          currentStory={this.props.stories[this.state.currentStoryGroup].items[this.state.currentStoryItem]}
-          progress={{ id: this.state.currentStoryItem, completed: this.state.count / ((this.props.stories[this.state.currentStoryGroup].items[this.currentStoryItem] && this.props.stories[this.state.currentStoryGroup].items[this.currentStoryItem].duration) || this.defaultInterval) }}
+          currentStory={this.props.stories[currentStoryGroup].items[currentStoryItem]}
+          progress={{ id: currentStoryItem, completed: this.state.count / ((this.props.stories[currentStoryGroup].items[currentStoryItem] && this.props.stories[currentStoryGroup].items[currentStoryItem].duration) || this.defaultInterval) }}
         />
         <Story
           ref={s => this.story = s}
@@ -113,10 +115,10 @@ class Container extends React.PureComponent {
           height={this.height}
           playState={this.state.pause}
           width={this.width}
-          story={this.props.stories[this.state.currentStoryGroup].items[this.currentStoryItem]}
+          story={this.props.stories[currentStoryGroup].items[currentStoryItem]}
           loader={this.props.loader}
           header={this.props.header}
-          headerContent={this.props.stories[this.state.currentStoryGroup].headerContent}
+          headerContent={this.props.stories[currentStoryGroup].headerContent}
           getVideoDuration={this.getVideoDuration}
           storyContentStyles={this.props.storyContentStyles}
         />
