@@ -62,12 +62,20 @@ Instead of simple string url, a comprehensive 'story object' can also be passed 
 
 Property | Description
 --- | ---
+`items` | An array of various story items (options described below)
+`headerContent` | Optional. Adds a header on the top. Object with `heading`, `subheading` and `profileImage` properties.
+`seeMore` | Optional. Adds a see more icon at the bottom of the story. On clicking, opens up this component.
+`styles` | Optional. Override the default story styles mentioned below.
+
+### Story Item
+
+Property | Description
+--- | ---
 `url` | The url of the resource, be it image or video.
 `duration` | Optional. Duration for which a story should persist.
-`header` | Optional. Adds a header on the top. Object with `heading`, `subheading` and `profileImage` properties.
-`seeMore` | Optional. Adds a see more icon at the bottom of the story. On clicking, opens up this component.
 `type` | Optional. To distinguish a video story. `type: 'video'` is necessary for a video story.
-`styles` | Optional. Override the default story styles mentioned below.
+`styles` | Optional. Override the default story styles defined above.
+
 
 ### Default story styles
 Following are the default story content styles. Override them by providing your own style object with each story or a global override by using the `storyStyles` prop.

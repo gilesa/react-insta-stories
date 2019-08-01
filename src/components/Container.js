@@ -7,7 +7,8 @@ class Container extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      currentId: 0,
+      currentStoryGroup: 0,
+      currentStoryItem: 0,
       pause: true,
       count: 0,
       storiesDone: 0
@@ -22,33 +23,43 @@ class Container extends React.PureComponent {
   }
 
   previous = () => {
-    if (this.state.currentId > 0) {
+    if (this.state.currentStoryItem > 0) {
       this.setState({
-        currentId: this.state.currentId - 1,
+        currentStoryItem: this.state.currentStoryItem - 1,
+        count: 0
+      })
+    } else if (this.state.currentStoryGroup > 0) {
+      this.setState({
+        currentStoryGroup: this.state.currentStoryGroup - 1,
         count: 0
       })
     }
   }
 
   next = () => {
-    if (this.props.loop) {
-      this.updateNextStoryIdForLoop()
+    if (this.state.currentStoryItem < this.props.stories[this.state.currentStoryGroup].items.length - 1) {
+      this.setState({
+        currentStoryItem: this.state.currentStoryItem + 1,
+        count: 0
+      })
+    } else if (this.props.loop) {
+      this.updateNextStoryGroupForLoop()
     } else {
-      this.updateNextStoryId()
+      this.updateNextStoryGroup()
     }
   };
 
-  updateNextStoryIdForLoop = () => {
+  updateNextStoryGroupForLoop = () => {
     this.setState({
-      currentId: (this.state.currentId + 1) % this.props.stories.length,
+      currentStoryGroup: (this.state.currentStoryGroup + 1) % this.props.stories.length,
       count: 0
     })
   }
 
-  updateNextStoryId = () => {
-    if (this.state.currentId < this.props.stories.length - 1) {
+  updateNextStoryGroup = () => {
+    if (this.state.currentStoryGroup < this.props.stories.length - 1) {
       this.setState({
-        currentId: this.state.currentId + 1,
+        currentStoryGroup: this.state.currentStoryGroup + 1,
         count: 0
       })
     }
@@ -90,10 +101,10 @@ class Container extends React.PureComponent {
           pause={this.state.pause}
           bufferAction={this.state.bufferAction}
           videoDuration={this.state.videoDuration}
-          length={this.props.stories.map((_, i) => i)}
+          length={this.props.stories[this.state.currentStoryGroup].items.map((_, i) => i)}
           defaultInterval={this.defaultInterval}
-          currentStory={this.props.stories[this.state.currentId]}
-          progress={{ id: this.state.currentId, completed: this.state.count / ((this.props.stories[this.state.currentId] && this.props.stories[this.state.currentId].duration) || this.defaultInterval) }}
+          currentStory={this.props.stories[this.state.currentStoryGroup].items[this.state.currentStoryItem]}
+          progress={{ id: this.state.currentStoryItem, completed: this.state.count / ((this.props.stories[this.state.currentStoryGroup].items[this.currentStoryItem] && this.props.stories[this.state.currentStoryGroup].items[this.currentStoryItem].duration) || this.defaultInterval) }}
         />
         <Story
           ref={s => this.story = s}
@@ -102,9 +113,10 @@ class Container extends React.PureComponent {
           height={this.height}
           playState={this.state.pause}
           width={this.width}
-          story={this.props.stories[this.state.currentId]}
+          story={this.props.stories[this.state.currentStoryGroup].items[this.currentStoryItem]}
           loader={this.props.loader}
           header={this.props.header}
+          headerContent={this.props.stories[this.state.currentStoryGroup].headerContent}
           getVideoDuration={this.getVideoDuration}
           storyContentStyles={this.props.storyContentStyles}
         />

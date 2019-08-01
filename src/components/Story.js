@@ -72,12 +72,11 @@ export default class Story extends React.Component {
     )
   }
   render() {
-    let isHeader = typeof this.props.story === 'object' && this.props.story.header
     return (
       <div style={{...styles.story, width: this.props.width, height: this.props.height}}>
         {this.getStoryContent()}
-        {isHeader && <div style={{position: 'absolute', left: 12, top: 20, zIndex: 19}}>
-          {this.props.header ? () => this.props.header(this.props.story.header) : <Header heading={this.props.story.header.heading} subheading={this.props.story.header.subheading} profileImage={this.props.story.header.profileImage} />}
+        {this.props.headerContent && <div style={{position: 'absolute', left: 12, top: 20, zIndex: 19}}>
+          {this.props.header ? () => this.props.header(this.props.headerContent) : <Header heading={this.props.headerContent.heading} subheading={this.props.headerContent.subheading} profileImage={this.props.headerContent.profileImage} />}
         </div>}
         {!this.state.loaded && <div style={{width: this.props.width, height: this.props.height, position: 'absolute', left: 0, top: 0, background: 'rgba(0, 0, 0, 0.9)', zIndex: 9, display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#ccc'}}>{this.props.loader || <div className={globalStyle.spinner} />}</div>}
         {this.props.story.seeMore &&
@@ -113,6 +112,11 @@ Story.propTypes = {
   action: PropTypes.func,
   loader: PropTypes.element,
   header: PropTypes.element,
+  headerContent: PropTypes.shape({
+    heading: PropTypes.string,
+    subheading: PropTypes.string,
+    profileImage: PropTypes.string,
+  }),
   playState: PropTypes.bool,
   getVideoDuration: PropTypes.func,
   bufferAction: PropTypes.bool,
