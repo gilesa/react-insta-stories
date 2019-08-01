@@ -31,6 +31,7 @@ class Container extends React.PureComponent {
     } else if (this.state.currentStoryGroup > 0) {
       this.setState({
         currentStoryGroup: this.state.currentStoryGroup - 1,
+        currentStoryItem: 0,
         count: 0
       })
     }
@@ -52,6 +53,7 @@ class Container extends React.PureComponent {
   updateNextStoryGroupForLoop = () => {
     this.setState({
       currentStoryGroup: (this.state.currentStoryGroup + 1) % this.props.stories.length,
+      currentStoryItem: 0,
       count: 0
     })
   }
@@ -60,6 +62,7 @@ class Container extends React.PureComponent {
     if (this.state.currentStoryGroup < this.props.stories.length - 1) {
       this.setState({
         currentStoryGroup: this.state.currentStoryGroup + 1,
+        currentStoryItem: 0,
         count: 0
       })
     }
