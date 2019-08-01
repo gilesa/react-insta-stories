@@ -28,12 +28,8 @@ class Container extends React.PureComponent {
         currentStoryItem: this.state.currentStoryItem - 1,
         count: 0
       })
-    } else if (this.state.currentStoryGroup > 0) {
-      this.setState({
-        currentStoryGroup: this.state.currentStoryGroup - 1,
-        currentStoryItem: this.props.stories[this.state.currentStoryGroup - 1].items.length - 1,
-        count: 0
-      })
+    } else {
+      this.updatePreviousStoryGroup()
     }
   }
 
@@ -48,14 +44,16 @@ class Container extends React.PureComponent {
     } else {
       this.updateNextStoryGroup()
     }
-  };
+  }
 
-  updateNextStoryGroupForLoop = () => {
-    this.setState({
-      currentStoryGroup: (this.state.currentStoryGroup + 1) % this.props.stories.length,
-      currentStoryItem: 0,
-      count: 0
-    })
+  updatePreviousStoryGroup = () => {
+    if (this.state.currentStoryGroup > 0) {
+      this.setState({
+        currentStoryGroup: this.state.currentStoryGroup - 1,
+        currentStoryItem: this.props.stories[this.state.currentStoryGroup - 1].items.length - 1,
+        count: 0
+      })
+    }
   }
 
   updateNextStoryGroup = () => {
@@ -68,7 +66,19 @@ class Container extends React.PureComponent {
     }
   }
 
-  debouncePause = (e) => {
+  updateNextStoryGroupForLoop = () => {
+    this.setState({
+      currentStoryGroup: (this.state.currentStoryGroup + 1) % this.props.stories.length,
+      currentStoryItem: 0,
+      count: 0
+    })
+  }
+
+  mouveDown = (e) => {
+    // Save reference to starting x position
+    this.mouseDownXPos = x: e.touches[0].clientX,
+
+    // Debounce pause
     e.preventDefault()
     this.mousedownId = setTimeout(() => {
       this.pause('pause')
@@ -82,6 +92,29 @@ class Container extends React.PureComponent {
       this.pause('play')
     } else {
       type === 'next' ? this.next() : this.previous()
+    }
+  }
+
+  mouveMove = (e) => {
+    if (!this.mouseDownXPos) {
+      return
+    }
+
+    const diff = this.mouseDownXPos - e.touches[0].clientX
+
+    // Threshold for a swipe
+    if (Math.abs(diff) < 20) {
+      return
+    }
+
+    if (diff > 0) {
+      if (this.props.loop) {
+        this.updateNextStoryGroupForLoop()
+      } else {
+        this.updateNextStoryGroup()
+      }
+    } else {
+      this.updatePreviousStoryGroup()
     }
   }
 
@@ -125,9 +158,9 @@ class Container extends React.PureComponent {
           getVideoDuration={this.getVideoDuration}
           storyContentStyles={this.props.storyContentStyles}
         />
-        <div style={styles.overlay}>
-          <div style={{ width: '50%', zIndex: 999 }} onTouchStart={this.debouncePause} onTouchEnd={e => this.mouseUp(e, 'previous')} onMouseDown={this.debouncePause} onMouseUp={(e) => this.mouseUp(e, 'previous')} />
-          <div style={{ width: '50%', zIndex: 999 }} onTouchStart={this.debouncePause} onTouchEnd={e => this.mouseUp(e, 'next')} onMouseDown={this.debouncePause} onMouseUp={(e) => this.mouseUp(e, 'next')} />
+        <div style={styles.overlay} onTouchMove={this.mouseMove}>
+          <div style={{ width: '50%', zIndex: 999 }} onTouchStart={this.mouseDown} onTouchEnd={e => this.mouseUp(e, 'previous')} onMouseDown={this.mouseDown} onMouseUp={(e) => this.mouseUp(e, 'previous')} />
+          <div style={{ width: '50%', zIndex: 999 }} onTouchStart={this.mouseDown} onTouchEnd={e => this.mouseUp(e, 'next')} onMouseDown={this.mouseDown} onMouseUp={(e) => this.mouseUp(e, 'next')} />
         </div>
       </div>
     )
