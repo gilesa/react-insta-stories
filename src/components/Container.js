@@ -31,7 +31,7 @@ class Container extends React.PureComponent {
     } else if (this.state.currentStoryGroup > 0) {
       this.setState({
         currentStoryGroup: this.state.currentStoryGroup - 1,
-        currentStoryItem: 0,
+        currentStoryItem: this.props.stories[this.state.currentStoryGroup - 1].items.length - 1,
         count: 0
       })
     }
