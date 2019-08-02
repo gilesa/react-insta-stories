@@ -29,11 +29,11 @@ const styles = {
     filter: 'drop-shadow(0 0px 3px rgba(0, 0, 0, 0.9))'
   },
   heading: {
-    fontSize: '1rem',
+    fontSize: '1.5rem',
     color: 'rgba(255, 255, 255, 0.9)'
   },
   subheading: {
-    fontSize: '0.6rem',
+    fontSize: '1rem',
     color: 'rgba(255, 255, 255, 0.8)'
   }
 }

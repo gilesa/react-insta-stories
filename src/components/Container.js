@@ -77,7 +77,7 @@ class Container extends React.PureComponent {
   mouseDown = (e) => {
     console.log(e)
     // Save reference to starting x position
-    this.mouseDownXPos = e.touches[0].clientX,
+    this.mouseDownXPos = (e.touches && e.touches.length) ? e.touches[0].clientX : e.clientX
 
     // Debounce pause
     e.preventDefault()
@@ -90,7 +90,8 @@ class Container extends React.PureComponent {
     e.preventDefault()
     this.mousedownId && clearTimeout(this.mousedownId)
 
-    const diff = this.mouseDownXPos ? this.mouseDownXPos - e.touches[0].clientX : 0
+    const xPos = (e.touches && e.touches.length) ? e.touches[0].clientX : e.clientX
+    const diff = this.mouseDownXPos ? (this.mouseDownXPos - xPos) : 0
     console.log(diff)
 
     // Threshold for a swipe
