@@ -90,6 +90,7 @@ class Container extends React.PureComponent {
     this.mousedownId && clearTimeout(this.mousedownId)
 
     const diff = this.mouseDownXPos ? this.mouseDownXPos - e.touches[0].clientX : 0
+    console.log(diff)
 
     // Threshold for a swipe
     if (Math.abs(diff) > 100) {
