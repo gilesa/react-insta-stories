@@ -88,33 +88,26 @@ class Container extends React.PureComponent {
   mouseUp = (e, type) => {
     e.preventDefault()
     this.mousedownId && clearTimeout(this.mousedownId)
-    if (this.state.pause) {
+
+    const diff = this.mouseDownXPos ? this.mouseDownXPos - e.touches[0].clientX : 0
+
+    // Threshold for a swipe
+    if (Math.abs(diff) > 100) {
+      if (diff > 0) { // swipe left
+        if (this.props.loop) {
+          this.updateNextStoryGroupForLoop()
+        } else {
+          this.updateNextStoryGroup()
+        }
+      } else { // swipe right
+        this.updatePreviousStoryGroup()
+      }
+    
+      this.mouseDownXPos = null      
+    } else if (this.state.pause) {
       this.pause('play')
     } else {
       type === 'next' ? this.next() : this.previous()
-    }
-  }
-
-  mouseMove = (e) => {
-    if (!this.mouseDownXPos) {
-      return
-    }
-
-    const diff = this.mouseDownXPos - e.touches[0].clientX
-
-    // Threshold for a swipe
-    if (Math.abs(diff) < 20) {
-      return
-    }
-
-    if (diff > 0) {
-      if (this.props.loop) {
-        this.updateNextStoryGroupForLoop()
-      } else {
-        this.updateNextStoryGroup()
-      }
-    } else {
-      this.updatePreviousStoryGroup()
     }
   }
 
@@ -158,7 +151,7 @@ class Container extends React.PureComponent {
           getVideoDuration={this.getVideoDuration}
           storyContentStyles={this.props.storyContentStyles}
         />
-        <div style={styles.overlay} onTouchMove={this.mouseMove}>
+        <div style={styles.overlay}>
           <div style={{ width: '50%', zIndex: 999 }} onTouchStart={this.mouseDown} onTouchEnd={e => this.mouseUp(e, 'previous')} onMouseDown={this.mouseDown} onMouseUp={(e) => this.mouseUp(e, 'previous')} />
           <div style={{ width: '50%', zIndex: 999 }} onTouchStart={this.mouseDown} onTouchEnd={e => this.mouseUp(e, 'next')} onMouseDown={this.mouseDown} onMouseUp={(e) => this.mouseUp(e, 'next')} />
         </div>
