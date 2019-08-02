@@ -95,7 +95,7 @@ class Container extends React.PureComponent {
     }
   }
 
-  mouveMove = (e) => {
+  mouseMove = (e) => {
     if (!this.mouseDownXPos) {
       return
     }
