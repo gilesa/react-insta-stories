@@ -149,6 +149,7 @@ class Container extends React.PureComponent {
           loader={this.props.loader}
           header={this.props.header}
           headerContent={this.props.stories[currentStoryGroup].headerContent}
+          seeMore={this.props.stories[currentStoryGroup].seeMore}
           getVideoDuration={this.getVideoDuration}
           storyContentStyles={this.props.storyContentStyles}
         />

@@ -79,9 +79,9 @@ export default class Story extends React.Component {
           {this.props.header ? () => this.props.header(this.props.headerContent) : <Header heading={this.props.headerContent.heading} subheading={this.props.headerContent.subheading} profileImage={this.props.headerContent.profileImage} />}
         </div>}
         {!this.state.loaded && <div style={{width: this.props.width, height: this.props.height, position: 'absolute', left: 0, top: 0, background: 'rgba(0, 0, 0, 0.9)', zIndex: 9, display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#ccc'}}>{this.props.loader || <div className={globalStyle.spinner} />}</div>}
-        {this.props.story.seeMore &&
+        {this.props.seeMore &&
         <div style={{position: 'absolute', margin: 'auto', bottom: 0, zIndex: 9999, width: '100%'}}>
-          <SeeMore action={this.props.action} toggleMore={this.toggleMore} showContent={this.state.showMore} seeMoreContent={this.props.story.seeMore} />
+          <SeeMore action={this.props.action} toggleMore={this.toggleMore} showContent={this.state.showMore} seeMoreContent={this.props.seeMore} />
         </div>}
       </div>
     )
